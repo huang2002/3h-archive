@@ -5,7 +5,7 @@
     "type": "module",
     "bin": "index.js",
     "scripts": {
-        "test": "node --test test/",
+        "test": "node --test",
         "help": "node index.js --help"
     },
     "repository": {
