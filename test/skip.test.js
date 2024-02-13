@@ -10,7 +10,7 @@ test.before(() => {
 });
 
 test(TEST_NAME, async () => {
-    const output = archive('foo.txt');
+    const output = archive('404.txt');
     const outputLowercased = output.toLowerCase();
     assert(outputLowercased.includes('warning'));
     assert(outputLowercased.includes('skipped'));

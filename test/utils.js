@@ -22,7 +22,9 @@ const ENCODING = 'utf-8';
  * @param {...string} args
  */
 export const archive = (...args) =>
-    execFileSync(process.execPath, [ENTRY_PATH, ...args], { stdio: 'inherit' });
+    execFileSync(process.execPath, [ENTRY_PATH, ...args], {
+        encoding: ENCODING,
+    });
 
 /**
  * @param {string} root

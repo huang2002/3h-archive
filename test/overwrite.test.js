@@ -23,7 +23,8 @@ test(TEST_NAME, async () => {
     const SUFFIX = '_archive';
     const EXPECTED_COPY_PATH = 'foo' + SUFFIX + '.txt';
 
-    archive('foo.txt', '-s', `[${SUFFIX}]`);
+    const output0 = archive('foo.txt', '-s', `[${SUFFIX}]`);
+    assert(output0.toLowerCase().includes('created'));
 
     const fooCopies0 = findCopies('.', 'foo', '.txt');
     assert(fooCopies0.length > 0, 'Failed to find the copy of foo.txt!');
@@ -38,11 +39,14 @@ test(TEST_NAME, async () => {
         'Found incorrect copy of foo.txt: ' + fooCopies0[0],
     );
     assertFileStructure('.', {
+        'foo.txt': 'foo-old',
         [fooCopies0[0]]: 'foo-old',
     });
 
     write('foo.txt', 'foo-new');
-    archive('foo.txt', '-s', `[${SUFFIX}]`);
+
+    const output1 = archive('foo.txt', '-s', `[${SUFFIX}]`);
+    assert(output1.toLowerCase().includes('updated'));
 
     const fooCopies1 = findCopies('.', 'foo', '.txt', fooCopies0);
     assert.strictEqual(
@@ -51,6 +55,7 @@ test(TEST_NAME, async () => {
         'Found extra copies of foo.txt: ' + fooCopies1.join(', '),
     );
     assertFileStructure('.', {
+        'foo.txt': 'foo-new',
         [fooCopies0[0]]: 'foo-new',
     });
 });

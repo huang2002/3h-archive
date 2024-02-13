@@ -22,7 +22,8 @@ test.before(() => {
 });
 
 test(TEST_NAME, async () => {
-    archive('foo.txt');
+    const output0 = archive('foo.txt');
+    assert(output0.toLowerCase().includes('created'));
 
     const fooCopies0 = findCopies('.', 'foo', '.txt');
     assert(fooCopies0.length > 0, 'Failed to find the copy of foo.txt! (0)');
@@ -32,12 +33,15 @@ test(TEST_NAME, async () => {
         'Found extra copies of foo.txt: ' + fooCopies0.join(', '),
     );
     assertFileStructure('.', {
+        'foo.txt': 'foo-old',
         [fooCopies0[0]]: 'foo-old',
     });
 
     await sleep(1011);
     write('foo.txt', 'foo-new');
-    archive('foo.txt');
+
+    const output1 = archive('foo.txt');
+    assert(output1.toLowerCase().includes('created'));
 
     const fooCopies1 = findCopies('.', 'foo', '.txt', fooCopies0);
     assert(fooCopies1.length > 0, 'Failed to find the copy of foo.txt! (1)');
@@ -47,6 +51,7 @@ test(TEST_NAME, async () => {
         'Found extra copies of foo.txt: ' + fooCopies1.join(', '),
     );
     assertFileStructure('.', {
+        'foo.txt': 'foo-new',
         [fooCopies0[0]]: 'foo-old',
         [fooCopies1[0]]: 'foo-new',
     });
