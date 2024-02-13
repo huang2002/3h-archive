@@ -1,6 +1,6 @@
 {
     "name": "3h-archive",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "A simple util program that creates copies of specified files.",
     "type": "module",
     "bin": "index.js",
