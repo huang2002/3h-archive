@@ -68,7 +68,7 @@ yargs(hideBin(process.argv))
                     if (existsSync(newFilePath)) {
                         console.log(`${WARNING_LABEL} Updated ${newFilePath}`);
                     } else {
-                        console.log(`${WARNING_LABEL} Created ${newFilePath}`);
+                        console.log(`${INFO_LABEL} Created ${newFilePath}`);
                     }
 
                     return copyFile(filePath, newFilePath);
