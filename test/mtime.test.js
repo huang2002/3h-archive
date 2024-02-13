@@ -21,7 +21,8 @@ test.before(() => {
 
 test(TEST_NAME, async () => {
     const output0 = archive('foo.txt', '-m');
-    assert(output0.toLowerCase().includes('created'));
+    assert(output0.includes('INFO'));
+    assert(output0.includes('Created'));
 
     const fooCopies0 = findCopies('.', 'foo', '.txt');
     assert(fooCopies0.length > 0, 'Failed to find the copy of foo.txt! (0)');
@@ -37,7 +38,8 @@ test(TEST_NAME, async () => {
 
     await sleep(1011);
     const output1 = archive('foo.txt', '-m');
-    assert(output1.toLowerCase().includes('updated'));
+    assert(output1.includes('WARNING'));
+    assert(output1.includes('Updated'));
 
     const fooCopies1 = findCopies('.', 'foo', '.txt', fooCopies0);
     assert.strictEqual(

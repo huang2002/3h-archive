@@ -11,7 +11,6 @@ test.before(() => {
 
 test(TEST_NAME, async () => {
     const output = archive('404.txt');
-    const outputLowercased = output.toLowerCase();
-    assert(outputLowercased.includes('warning'));
-    assert(outputLowercased.includes('skipped'));
+    assert(output.includes('WARNING'));
+    assert(output.includes('Skipped'));
 });
