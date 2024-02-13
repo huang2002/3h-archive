@@ -9,11 +9,13 @@ $ 3h-archive --help
 Create copies of the given files.
 
 Positionals:
-  files  Files to be archived                           [string]
+  files  Files to be archived                                           [string]
 
 Options:
-      --help     Show help                             [boolean]
-      --version  Show version number                   [boolean]
-  -s, --suffix   Suffix template (dayjs)
-                      [string] [default: "_YYYY.MM.DD-HH.mm.ss"]
+      --help           Show help                                       [boolean]
+      --version        Show version number                             [boolean]
+  -s, --suffix         Suffix template (dayjs)
+                                      [string] [default: "_YYYY.MM.DD-HH.mm.ss"]
+  -m, --last-modified  Use last modified time instead of current time
+                                                      [boolean] [default: false]
 ```
