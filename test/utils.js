@@ -1,3 +1,4 @@
+import assert from 'node:assert';
 import { execFileSync } from 'node:child_process';
 import {
     existsSync,
@@ -62,9 +63,8 @@ export const sleep = (ms) =>
 
 /**
  * @param {string} dirName
- * @param {Record<string, string>} files
  */
-export const initTest = (dirName, files) => {
+export const initTest = (dirName) => {
     process.chdir(CURRENT_FILE_DIR);
 
     if (!existsSync(ROOT_DIR)) {
@@ -77,8 +77,40 @@ export const initTest = (dirName, files) => {
     }
     mkdirSync(dirName);
     process.chdir(dirName);
+};
 
-    for (const [filePath, fileContent] of Object.entries(files)) {
-        write(filePath, fileContent);
+/**
+ * @typedef {{ [path: string]: string | FileStructure; }} FileStructure
+ */
+
+/**
+ * @param {string} root
+ * @param {FileStructure} entries
+ */
+export const setFileStructure = (root, entries) => {
+    for (const [entryPath, entryContent] of Object.entries(entries)) {
+        const fullPath = path.normalize(path.join(root, entryPath));
+        if (typeof entryContent === 'string') {
+            write(fullPath, entryContent);
+        } else {
+            setFileStructure(fullPath, entryContent);
+        }
+    }
+};
+
+/**
+ * @param {string} root
+ * @param {FileStructure} entries
+ */
+export const assertFileStructure = (root, entries) => {
+    for (const [entryPath, entryContent] of Object.entries(entries)) {
+        const fullPath = path.normalize(path.join(root, entryPath));
+        assert(existsSync(fullPath), `Entry not found: ${fullPath}`);
+
+        if (typeof entryContent === 'string') {
+            assert.strictEqual(read(fullPath), entryContent);
+        } else {
+            assertFileStructure(fullPath, entryContent);
+        }
     }
 };

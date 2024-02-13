@@ -1,12 +1,22 @@
 #!/usr/bin/env node
 import assert from 'node:assert';
 import test, { before } from 'node:test';
-import { initTest, write, archive, findCopies, read, sleep } from './utils.js';
+import {
+    initTest,
+    write,
+    archive,
+    findCopies,
+    read,
+    sleep,
+    setFileStructure,
+    assertFileStructure,
+} from './utils.js';
 
 const TEST_NAME = 'basic';
 
 before(() => {
-    initTest(TEST_NAME, {
+    initTest(TEST_NAME);
+    setFileStructure('.', {
         'foo.txt': 'foo-old',
         'bar.txt': 'bar-old',
     });
@@ -22,7 +32,9 @@ test(TEST_NAME, async () => {
         1,
         'Found extra copies of foo.txt: ' + fooCopies0.join(', '),
     );
-    assert.strictEqual(read(fooCopies0[0]), 'foo-old');
+    assertFileStructure('.', {
+        [fooCopies0[0]]: 'foo-old',
+    });
 
     await sleep(1011);
     write('foo.txt', 'foo-new');
@@ -35,8 +47,10 @@ test(TEST_NAME, async () => {
         1,
         'Found extra copies of foo.txt: ' + fooCopies1.join(', '),
     );
-    assert.strictEqual(read(fooCopies0[0]), 'foo-old');
-    assert.strictEqual(read(fooCopies1[0]), 'foo-new');
+    assertFileStructure('.', {
+        [fooCopies0[0]]: 'foo-old',
+        [fooCopies1[0]]: 'foo-new',
+    });
 
     const barCopies0 = findCopies('.', 'bar', '.txt');
     assert.strictEqual(

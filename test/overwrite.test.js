@@ -1,12 +1,21 @@
 #!/usr/bin/env node
 import assert from 'node:assert';
 import test, { before } from 'node:test';
-import { initTest, write, archive, findCopies, read } from './utils.js';
+import {
+    initTest,
+    write,
+    archive,
+    findCopies,
+    read,
+    setFileStructure,
+    assertFileStructure,
+} from './utils.js';
 
 const TEST_NAME = 'overwrite';
 
 before(() => {
-    initTest(TEST_NAME, {
+    initTest(TEST_NAME);
+    setFileStructure('.', {
         'foo.txt': 'foo-old',
         'bar.txt': 'bar-old',
     });
@@ -14,6 +23,7 @@ before(() => {
 
 test(TEST_NAME, async () => {
     const SUFFIX = '_archive';
+    const EXPECTED_COPY_PATH = 'foo' + SUFFIX + '.txt';
 
     archive('foo.txt', '-s', `[${SUFFIX}]`);
 
@@ -26,10 +36,12 @@ test(TEST_NAME, async () => {
     );
     assert.strictEqual(
         fooCopies0[0],
-        'foo' + SUFFIX + '.txt',
-        'Found incorrect copy of foo.txt!',
+        EXPECTED_COPY_PATH,
+        'Found incorrect copy of foo.txt: ' + fooCopies0[0],
     );
-    assert.strictEqual(read(fooCopies0[0]), 'foo-old');
+    assertFileStructure('.', {
+        [fooCopies0[0]]: 'foo-old',
+    });
 
     write('foo.txt', 'foo-new');
     archive('foo.txt', '-s', `[${SUFFIX}]`);
@@ -40,7 +52,9 @@ test(TEST_NAME, async () => {
         0,
         'Found extra copies of foo.txt: ' + fooCopies1.join(', '),
     );
-    assert.strictEqual(read(fooCopies0[0]), 'foo-new');
+    assertFileStructure('.', {
+        [fooCopies0[0]]: 'foo-new',
+    });
 
     const barCopies0 = findCopies('.', 'bar', '.txt');
     assert.strictEqual(
