@@ -1,0 +1,39 @@
+{
+    "name": "3h-archive",
+    "version": "0.1.0",
+    "description": "A simple util program that creates copies of specified files.",
+    "type": "module",
+    "bin": "index.js",
+    "scripts": {
+        "test": "node --test test/",
+        "help": "node index.js --help"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/huang2002/3h-archive.git"
+    },
+    "keywords": [
+        "archive",
+        "copy",
+        "file",
+        "backup",
+        "timestamp",
+        "3h"
+    ],
+    "author": "3h",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/huang2002/3h-archive/issues"
+    },
+    "homepage": "https://github.com/huang2002/3h-archive#readme",
+    "dependencies": {
+        "chalk": "^5.3.0",
+        "dayjs": "^1.11.10",
+        "yargs": "^17.7.2"
+    },
+    "devDependencies": {
+        "@types/node": "20.10",
+        "@types/yargs": "^17.0.32",
+        "typescript": "^5.3.3"
+    }
+}
