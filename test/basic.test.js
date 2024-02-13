@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 import assert from 'node:assert';
 import test, { before } from 'node:test';
-import {
-    beforeTest,
-    write,
-    archive,
-    findCopies,
-    read,
-    sleep,
-} from './utils.js';
+import { initTest, write, archive, findCopies, read, sleep } from './utils.js';
 
 const TEST_NAME = 'basic';
 
 before(() => {
-    beforeTest(TEST_NAME);
+    initTest(TEST_NAME, {
+        'foo.txt': 'foo-old',
+        'bar.txt': 'bar-old',
+    });
 });
 
 test(TEST_NAME, async () => {
@@ -47,12 +43,5 @@ test(TEST_NAME, async () => {
         barCopies0.length,
         0,
         'Found unexpected copies of bar.txt: ' + barCopies0.join(', '),
-    );
-
-    const bazCopies0 = findCopies('.', 'baz', '.txt');
-    assert.strictEqual(
-        bazCopies0.length,
-        0,
-        'Found unexpected copies of baz.txt: ' + bazCopies0.join(', '),
     );
 });

@@ -62,8 +62,9 @@ export const sleep = (ms) =>
 
 /**
  * @param {string} dirName
+ * @param {Record<string, string>} files
  */
-export const beforeTest = (dirName) => {
+export const initTest = (dirName, files) => {
     process.chdir(CURRENT_FILE_DIR);
 
     if (!existsSync(ROOT_DIR)) {
@@ -77,7 +78,7 @@ export const beforeTest = (dirName) => {
     mkdirSync(dirName);
     process.chdir(dirName);
 
-    write('foo.txt', 'foo-old');
-    write('bar.txt', 'bar-old');
-    write('baz.txt', 'baz-old');
+    for (const [filePath, fileContent] of Object.entries(files)) {
+        write(filePath, fileContent);
+    }
 };
