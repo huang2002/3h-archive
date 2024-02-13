@@ -6,7 +6,7 @@ import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import chalk from 'chalk';
 import dayjs from 'dayjs';
-import { copyFile } from 'node:fs/promises';
+import { copyFile, stat } from 'node:fs/promises';
 
 // TODO: overwrite control
 
@@ -32,12 +32,19 @@ yargs(hideBin(process.argv))
                     string: true,
                     description: 'Suffix template (dayjs)',
                     default: '_YYYY.MM.DD-HH.mm.ss',
+                })
+                .option('last-modified', {
+                    alias: 'm',
+                    boolean: true,
+                    description:
+                        'Use last modified time instead of current time',
+                    default: false,
                 }),
         (argv) => {
             const now = dayjs();
 
             Promise.all(
-                argv.files.map((filePath) => {
+                argv.files.map(async (filePath) => {
                     if (!existsSync(filePath)) {
                         console.warn(
                             `${WARNING_LABEL} Skipped ${filePath} ` +
@@ -51,7 +58,10 @@ yargs(hideBin(process.argv))
                         0,
                         filePath.length - fileExtension.length,
                     );
-                    const suffix = now.format(argv.suffix);
+                    const time = argv.lastModified
+                        ? dayjs((await stat(filePath)).mtime)
+                        : now;
+                    const suffix = time.format(argv.suffix);
                     const newFilePath =
                         filePathWithoutExt + suffix + fileExtension;
 

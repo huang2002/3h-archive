@@ -6,7 +6,6 @@ import {
     write,
     archive,
     findCopies,
-    read,
     sleep,
     setFileStructure,
     assertFileStructure,

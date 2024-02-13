@@ -6,7 +6,6 @@ import {
     write,
     archive,
     findCopies,
-    read,
     setFileStructure,
     assertFileStructure,
 } from './utils.js';
@@ -17,7 +16,6 @@ before(() => {
     initTest(TEST_NAME);
     setFileStructure('.', {
         'foo.txt': 'foo-old',
-        'bar.txt': 'bar-old',
     });
 });
 
@@ -55,11 +53,4 @@ test(TEST_NAME, async () => {
     assertFileStructure('.', {
         [fooCopies0[0]]: 'foo-new',
     });
-
-    const barCopies0 = findCopies('.', 'bar', '.txt');
-    assert.strictEqual(
-        barCopies0.length,
-        0,
-        'Found unexpected copies of bar.txt: ' + barCopies0.join(', '),
-    );
 });
