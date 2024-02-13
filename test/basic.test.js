@@ -22,7 +22,7 @@ before(() => {
 });
 
 test(TEST_NAME, async () => {
-    archive('foo.txt', '404.txt');
+    archive('foo.txt');
 
     const fooCopies0 = findCopies('.', 'foo', '.txt');
     assert(fooCopies0.length > 0, 'Failed to find the copy of foo.txt! (0)');
