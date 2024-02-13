@@ -46,7 +46,7 @@ yargs(hideBin(process.argv))
             Promise.all(
                 argv.files.map(async (filePath) => {
                     if (!existsSync(filePath)) {
-                        console.warn(
+                        console.log(
                             `${WARNING_LABEL} Skipped ${filePath} ` +
                                 secondaryText('(not found)'),
                         );
@@ -65,10 +65,11 @@ yargs(hideBin(process.argv))
                     const newFilePath =
                         filePathWithoutExt + suffix + fileExtension;
 
-                    const action = existsSync(newFilePath)
-                        ? 'Updated'
-                        : 'Created';
-                    console.log(`${INFO_LABEL} ${action} ${newFilePath}`);
+                    if (existsSync(newFilePath)) {
+                        console.log(`${WARNING_LABEL} Updated ${newFilePath}`);
+                    } else {
+                        console.log(`${WARNING_LABEL} Created ${newFilePath}`);
+                    }
 
                     return copyFile(filePath, newFilePath);
                 }),
