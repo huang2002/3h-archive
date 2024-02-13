@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import assert from 'node:assert';
-import test, { before } from 'node:test';
+import test from 'node:test';
 import {
     initTest,
     write,
@@ -13,7 +13,7 @@ import {
 
 const TEST_NAME = 'basic';
 
-before(() => {
+test.before(() => {
     initTest(TEST_NAME);
     setFileStructure('.', {
         'foo.txt': 'foo-old',

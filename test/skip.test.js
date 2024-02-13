@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 import assert from 'node:assert';
-import test, { before } from 'node:test';
+import test from 'node:test';
 import { initTest, archive } from './utils.js';
 
 const TEST_NAME = 'skip';
 
-before(() => {
+test.before(() => {
     initTest(TEST_NAME);
 });
 
